@@ -117,22 +117,26 @@ services:
       - netUsuario
       - netReserva
       - netSala
-  
-  web:
-    image: nginx:latest
-    volumes:
-      - ./application/src:/usr/share/nginx/html
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "3000:80"
+    depends_on:
+      - usuario
+      - reserva
+      - sala
     networks:
       - netApiGateway
 
-  networks:
-    netUsuario:
-      driver: bridge
-    netReserva:
-      driver: bridge
-    netSala:
-      driver: bridge
-    netApiGateway:
-      driver: bridge
+networks:
+  netUsuario:
+    driver: bridge
+  netReserva:
+    driver: bridge
+  netSala:
+    driver: bridge
+  netApiGateway:
+    driver: bridge
