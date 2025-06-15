@@ -12,7 +12,7 @@ const Reserva = () => {
 
     const getReservas = async () => {
         try {
-            const resp = await axios.get('http://localhost:8084/reservas')
+            const resp = await axios.get('http://localhost:8080/reservas')
             setReservas(resp.data || [])
         } catch (err) {
             console.error('Erro ao buscar reservas:', err)
@@ -21,7 +21,7 @@ const Reserva = () => {
 
     const getSalas = async () => {
         try {
-            const resp = await axios.get('http://localhost:8085/salas')
+            const resp = await axios.get('http://localhost:8080/salas')
             setSalas(resp.data || [])
         } catch (err) {
             console.error('Erro ao buscar salas:', err)
@@ -30,7 +30,7 @@ const Reserva = () => {
 
     const getUsuarios = async () => {
         try {
-            const resp = await axios.get('http://localhost:8083/usuarios')
+            const resp = await axios.get('http://localhost:8080/usuarios')
             setUsuarios(resp.data || [])
         } catch (err) {
             console.error('Erro ao buscar usuários:', err)

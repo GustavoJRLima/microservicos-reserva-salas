@@ -29,10 +29,9 @@ const NovaReservaModal = ({ onClose, onSuccess, salas, usuarios }) => {
         e.preventDefault()
 
         try {
-            await axios.post('http://localhost:8084/reservas/salvar', {
-                ...form,
-                dataHora: new Date(form.dataHora).toISOString(),
-            })
+            await axios.post(
+                `http://localhost:8080/reservas/criar-com-mensageria?usuarioId=${form.usuarioId}&salaId=${form.salaId}&dataHora=${new Date(form.dataHora).toISOString().replace('.000Z', '')}`
+            );
             onSuccess()
             onClose()
         } catch (err) {

@@ -10,7 +10,7 @@ const Sala = () => {
 
     const getSalas = async () => {
         try {
-            const resp = await axios.get('http://localhost:8085/salas')
+            const resp = await axios.get('http://localhost:8080/salas')
             setSalas(resp.data || [])
         } catch (err) {
             console.error('Erro ao buscar salas:', err)

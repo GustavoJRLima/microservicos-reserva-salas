@@ -50,7 +50,7 @@ const NovoUsuarioModal = ({ onClose, onSuccess }) => {
         }
 
         try {
-            await axios.post('http://localhost:8083/usuarios/salvar', form)
+            await axios.post('http://localhost:8080/usuarios/salvar', form)
             onSuccess()
             onClose()
         } catch (err) {

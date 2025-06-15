@@ -10,7 +10,7 @@ const Usuario = () => {
 
     const getUsuarios = async () => {
         try {
-            const resp = await axios.get('http://localhost:8083/usuarios')
+            const resp = await axios.get('http://localhost:8080/usuarios')
             setUsuarios(resp.data || [])
         } catch (err) {
             console.error('Erro ao buscar usuários:', err)

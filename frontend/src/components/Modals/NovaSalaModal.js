@@ -20,7 +20,7 @@ const NovaSalaModal = ({ onClose, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8085/salas/salvar', {
+      await axios.post('http://localhost:8080/salas/salvar', {
         nome,
         capacidade: parseInt(capacidade)
       });

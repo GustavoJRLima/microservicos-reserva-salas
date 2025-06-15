@@ -54,7 +54,10 @@ services:
     ports:
       - "8084:8082"
     depends_on:
-      - dbReserva
+      dbReserva:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     networks:
       - netReserva
       - netApiGateway
@@ -70,7 +73,12 @@ services:
       - "5434:5432"
     networks:
       - netReserva
-  
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U admin -d reservadb']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   sala:
     restart: always
     container_name: sala
@@ -123,13 +131,50 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:80"
-    depends_on:
-      - usuario
-      - reserva
-      - sala
+      - '3000:80'
     networks:
       - netApiGateway
+
+  gateway:
+    restart: always
+    container_name: gateway
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    environment:
+      - SERVER_PORT=8080
+    ports:
+      - '8080:8080'
+    depends_on:
+      - usuario
+      - sala
+      - reserva
+      - rabbitmq
+    networks:
+      - netApiGateway
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    mem_limit: 512m
+    cpus: 0.5
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_VHOST: /
+    networks:
+      - netApiGateway
+      - netUsuario
+      - netReserva
+      - netSala
+    healthcheck:
+      test: ['CMD', 'rabbitmqctl', 'status']
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 networks:
   netUsuario:
